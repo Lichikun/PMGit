@@ -28,7 +28,7 @@ public class MysqlGenerator {
     /**
      * 数据库表名，支持多个，用,隔开
      */
-    private static final String bean="employment";
+    private static final String bean="user";
     /**
      * 数据库
      */

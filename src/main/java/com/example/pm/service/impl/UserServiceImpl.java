@@ -19,7 +19,7 @@ import java.util.List;
     * </p>
 *
 * @author YKH
-* @since 2023-05-14
+* @since 2023-05-16
 */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
@@ -27,6 +27,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
     @Override
     public Boolean add(User user) {
+        user.setState(1);
         this.save(user);
         return true;
     }
@@ -48,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     }
 
     @Override
-    public Boolean updateUsefulByIds(String ids, Boolean flag) {
+    public Boolean updateUsefulByIds(String ids, Integer flag) {
         //ids  若干个id 用逗号隔开
         String[] aryIds = ids.split(",");
         for(String id: aryIds){
@@ -59,6 +60,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
             //修改数据
             User user = this.getOne(UpdateWrapper);
+            user.setState(flag);
 
             //执行
             this.update(user);
@@ -69,23 +71,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     @Override
     public User getByName(String name){
     QueryWrapper<User> QueryWrapper = new QueryWrapper<>();
-        QueryWrapper.eq("username",name);
+        QueryWrapper.eq("name",name);
 
         return this.getOne(QueryWrapper);
     }
 
     @Override
     public User getById(String id){
-        QueryWrapper<User> QueryWrapper = new QueryWrapper<>();
-        QueryWrapper.eq("id",id);
+    QueryWrapper<User> QueryWrapper = new QueryWrapper<>();
+    QueryWrapper.eq("id",id);
 
-        return this.getOne(QueryWrapper);
+    return this.getOne(QueryWrapper);
     }
 
     @Override
     public List<User> list (String name){
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("username",name);
+            queryWrapper.like("name",name);
 
             return this.list(queryWrapper);
     }
@@ -94,7 +96,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     public Page<User> page(Integer pageNum,Integer pageSize,String name) {
         Page<User> page = new Page<>(pageNum,pageSize);
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("username",name);
+        queryWrapper.like("name",name);
 
         return this.page(page,queryWrapper);
     }
