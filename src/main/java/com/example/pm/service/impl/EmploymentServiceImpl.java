@@ -68,9 +68,9 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper,Employme
     }
 
     @Override
-    public Employment getByName(String name){
+    public Employment getByName(String title){
     QueryWrapper<Employment> QueryWrapper = new QueryWrapper<>();
-        QueryWrapper.eq("ename",name);
+        QueryWrapper.eq("title",title);
 
         return this.getOne(QueryWrapper);
     }
@@ -84,19 +84,43 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper,Employme
     }
 
     @Override
-    public List<Employment> list (String name){
+    public List<Employment> list (String title){
         QueryWrapper<Employment> queryWrapper = new QueryWrapper<>();
-            queryWrapper.like("ename",name);
+            queryWrapper.like("title",title);
 
             return this.list(queryWrapper);
     }
 
     @Override
-    public Page<Employment> page(Integer pageNum,Integer pageSize,String name) {
+    public Page<Employment> page(Integer pageNum,Integer pageSize,String title) {
         Page<Employment> page = new Page<>(pageNum,pageSize);
         QueryWrapper<Employment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("ename",name);
+        queryWrapper.like("title", title);
 
+        return this.page(page,queryWrapper);
+    }
+
+    @Override
+    public List<Employment> getByCategories(String categoryIds) {
+        String[] aryCategories = categoryIds.split(",");
+        List<Employment> employmentList= new ArrayList<>();
+        for(String category: aryCategories){
+            QueryWrapper<Employment> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("category", category);
+            employmentList.addAll(this.list(queryWrapper));
+        }
+
+        return employmentList;
+    }
+
+    @Override
+    public Page<Employment> pageByCategories(Integer pageNum, Integer pageSize, String categories) {
+        Page<Employment> page = new Page<>(pageNum,pageSize);
+        String[] aryCategories = categories.split(",");
+        QueryWrapper<Employment> queryWrapper = new QueryWrapper<>();
+        for(String category: aryCategories){
+            queryWrapper.eq("category", category);
+        }
         return this.page(page,queryWrapper);
     }
 
