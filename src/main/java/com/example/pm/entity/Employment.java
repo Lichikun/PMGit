@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 /**
  * <p>
  * 
@@ -26,28 +28,38 @@ import lombok.experimental.Accessors;
 public class Employment extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    private String salary;
-
-    private String ename;
-
+    // 任务标题，例如：洗碗工、普工
+    private String title;
+    // 雇主名称
     private String employer;
-
-    private String address;
-
-    private String time;
-
-    private String msg;
-
+    // 发布任务用户ID
+    private String employerId;
+    // 雇主电话
     private String tel;
-
+    // 当前状态（1--等待接单2--已接单3--已完成4--已取消）
+    private Integer state;
+    // 图片描述
+    private String img;
+    // 联系邮箱
     private String email;
-
-    private String require;
-
-    private String edu;
-
-    private String category;
-
-    private String state;
+    // 工作地址
+    private String address;
+    // 工作描述
+    private String description;
+    // 创建时间
+    private String createTime;
+    // 工作时间
+    private String workTime;
+    // 截止时间
+    private String endTime;
+    // 分类
+    private Integer category;
+    // 工资上限
+    private Integer maxSalary;
+    // 工资下限
+    private Integer minSalary;
+    // 所需教育程度
+    private String education;
+    // 接受任务用户ID
+    private String employeeId;
 }

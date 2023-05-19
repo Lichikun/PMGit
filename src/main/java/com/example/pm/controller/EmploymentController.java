@@ -102,7 +102,7 @@ public class EmploymentController {
     }
 
     @ApiOperation(value = "按类别查询任务")
-    @RequestMapping(method = RequestMethod.GET,value = "/page")
+    @RequestMapping(method = RequestMethod.GET,value = "/get_tasks_by_categories")
     public Result get_tasks_by_categories( String categoryIds ){
         Result result = new Result();
         if(categoryIds == null || categoryIds.equals("")){
@@ -122,7 +122,7 @@ public class EmploymentController {
             @ApiImplicitParam(name = "pageSize",value = "每页的任务数量",required = true,paramType = "query"),
             @ApiImplicitParam(name = "categoryIds",value = "需要查找类别的id",required = true,paramType = "query")
     })
-    @RequestMapping(method = RequestMethod.GET,value = "/page")
+    @RequestMapping(method = RequestMethod.GET,value = "/page_tasks_by_categories")
     public Result page_tasks_by_categories( Integer pageNum,Integer pageSize, String categoryIds ){
         Result result = new Result();
         if (categoryIds == null || categoryIds.equals("")){
