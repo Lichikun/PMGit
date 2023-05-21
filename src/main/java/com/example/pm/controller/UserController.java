@@ -111,8 +111,8 @@ public class UserController {
 
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNum",value = "第几页",required = true,paramType = "query"),
-        @ApiImplicitParam(name = "pageSize",value = "每页的书籍数量",required = true,paramType = "query"),
-        @ApiImplicitParam(name = "name",value = "需要查找书籍的名字",required = true,paramType = "query")
+        @ApiImplicitParam(name = "pageSize",value = "每页的用户数量",required = true,paramType = "query"),
+        @ApiImplicitParam(name = "name",value = "需要查找用户的名字",required = true,paramType = "query")
     })
     @ApiOperation(value = "信息分页查询接口")
     @RequestMapping(method = RequestMethod.POST,value = "/page")

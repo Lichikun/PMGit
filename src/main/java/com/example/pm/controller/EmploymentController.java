@@ -92,7 +92,7 @@ public class EmploymentController {
     })
     @ApiOperation(value = "查找任务接口：根据id精确查找任务")
     @RequestMapping(method = RequestMethod.POST,value = "/getById")
-    public Result listbyid(String id){
+    public Result listById(String id){
         Result result = new Result();
         result.success("获取list成功");
         result.setData(employmentService.getById(id));
@@ -102,8 +102,8 @@ public class EmploymentController {
 
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNum",value = "第几页",required = true,paramType = "query"),
-        @ApiImplicitParam(name = "pageSize",value = "每页的书籍数量",required = true,paramType = "query"),
-        @ApiImplicitParam(name = "title",value = "需要查找书籍的名字",required = true,paramType = "query")
+        @ApiImplicitParam(name = "pageSize",value = "每页的任务数量",required = true,paramType = "query"),
+        @ApiImplicitParam(name = "title",value = "需要查找任务的名字",required = true,paramType = "query")
     })
     @ApiOperation(value = "分页查询任务")
     @RequestMapping(method = RequestMethod.POST,value = "/page")
@@ -113,4 +113,39 @@ public class EmploymentController {
         result.setData(employmentService.page(pageNum,pageSize,title));
         return result;
     }
+
+    @ApiOperation(value = "按用户id查询任务")
+    @RequestMapping(method = RequestMethod.GET,value = "/get_tasks_by_employer")
+    public Result get_tasks_by_categories( String employerIds ){
+        Result result = new Result();
+        if(employerIds == null || employerIds.equals("")){
+            result.fail("错误：参数为空");
+        }else {
+            result.success("获取任务成功");
+            result.setData(employmentService.getByEmployerIds(employerIds));
+        }
+        return result;
+    }
+
+
+    @ApiOperation(value = "按用户ID分页查询任务")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum",value = "第几页",required = true,paramType = "query"),
+            @ApiImplicitParam(name = "pageSize",value = "每页的任务数量",required = true,paramType = "query"),
+            @ApiImplicitParam(name = "employerIds",value = "需要查找用户的id",required = true,paramType = "query")
+    })
+    @RequestMapping(method = RequestMethod.GET,value = "/page_tasks_by_employer")
+    public Result page_tasks_by_categories( Integer pageNum,Integer pageSize, String employerIds ){
+        Result result = new Result();
+        if (employerIds == null || employerIds.equals("")){
+            result.setData(employerIds);
+            result.fail("错误：参数为空");
+        }else {
+            result.success("分页获取任务成功");
+            result.setData(employmentService.pageByEmployerIds(pageNum,pageSize,employerIds));
+        }
+        return result;
+    }
+
+
 }

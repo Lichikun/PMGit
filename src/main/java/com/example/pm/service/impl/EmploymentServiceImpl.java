@@ -102,4 +102,28 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper,Employme
         return this.page(page,queryWrapper);
     }
 
+    @Override
+    public List<Employment> getByEmployerIds(String employerIds) {
+        String[] aryEmployers = employerIds.split(",");
+        List<Employment> employmentList= new ArrayList<>();
+        for(String employerId : aryEmployers){
+            QueryWrapper<Employment> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("employerID", employerId);
+            employmentList.addAll(this.list(queryWrapper));
+        }
+
+        return employmentList;
+    }
+
+    @Override
+    public Page<Employment> pageByEmployerIds(Integer pageNum, Integer pageSize, String employerIds) {
+        Page<Employment> page = new Page<>(pageNum,pageSize);
+        String[] aryEmployers = employerIds.split(",");
+        QueryWrapper<Employment> queryWrapper = new QueryWrapper<>();
+        for(String employerId: aryEmployers){
+            queryWrapper.eq("employerID", employerId);
+        }
+        return this.page(page,queryWrapper);
+    }
+
 }

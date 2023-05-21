@@ -24,4 +24,6 @@ public interface EmploymentService extends IService<Employment> {
     Employment getById(String id);
     Boolean updateUsefulByIds(String id, Integer flag);
     Page<Employment> page(Integer pageNum, Integer pageSize, String name);
+    List<Employment> getByEmployerIds(String employerIds);
+    Page<Employment> pageByEmployerIds(Integer pageNum, Integer pageSize, String employerIds);
 }
