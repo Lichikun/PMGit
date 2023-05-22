@@ -114,6 +114,40 @@ public class EmploymentController {
         return result;
     }
 
+    @ApiOperation(value = "按类别查询任务")
+    @RequestMapping(method = RequestMethod.GET,value = "/get_tasks_by_categories")
+    public Result get_tasks_by_categories( String categoryIds ){
+        Result result = new Result();
+        if(categoryIds == null || categoryIds.equals("")){
+            result.fail("错误：参数为空");
+            return result;
+        }else {
+            result.success("获取任务成功");
+            result.setData(employmentService.getByCategories(categoryIds));
+            return result;
+        }
+    }
+
+
+    @ApiOperation(value = "按类别分页查询任务")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum",value = "第几页",required = true,paramType = "query"),
+            @ApiImplicitParam(name = "pageSize",value = "每页的任务数量",required = true,paramType = "query"),
+            @ApiImplicitParam(name = "categoryIds",value = "需要查找类别的id",required = true,paramType = "query")
+    })
+    @RequestMapping(method = RequestMethod.GET,value = "/page_tasks_by_categories")
+    public Result page_tasks_by_categories( Integer pageNum,Integer pageSize, String categoryIds ){
+        Result result = new Result();
+        if (categoryIds == null || categoryIds.equals("")){
+            result.fail("错误：参数为空");
+            return result;
+        }else {
+            result.success("分页获取任务成功");
+            result.setData(employmentService.pageByCategories(pageNum,pageSize,categoryIds));
+            return result;
+        }
+    }
+
     @ApiOperation(value = "按用户id查询任务")
     @RequestMapping(method = RequestMethod.GET,value = "/get_tasks_by_employer")
     public Result get_tasks_by_categories( String employerIds ){
@@ -146,6 +180,7 @@ public class EmploymentController {
         }
         return result;
     }
+
 
 
 }

@@ -24,4 +24,5 @@ public class BaseEntity implements Serializable {
         }
         ((Map<String, Object>) etc).put(key, value);
     }
+
 }

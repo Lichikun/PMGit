@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 /**
  * <p>
  * 
@@ -80,6 +82,7 @@ public class Employment extends BaseEntity {
     @ApiModelProperty(value = "接受任务用户ID")
     @TableField("employeeID")
     private String employeeID;
+
 
 
 }

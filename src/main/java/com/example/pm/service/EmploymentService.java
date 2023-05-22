@@ -19,11 +19,15 @@ public interface EmploymentService extends IService<Employment> {
     Boolean add(Employment employment);
     void deleteByIds(String ids);
     Boolean update(Employment employment);
-    Employment getByName(String name);
-    List<Employment> list(String id);
+
+    Employment getByName(String title);
     Employment getById(String id);
-    Boolean updateUsefulByIds(String id, Integer flag);
-    Page<Employment> page(Integer pageNum, Integer pageSize, String name);
+    List<Employment> list(String id);
+    Boolean updateUsefulByIds(String id, String flag);
+    Page<Employment> page(Integer pageNum, Integer pageSize, String title);
+    List<Employment> getByCategories(String categories);
+    Page<Employment> pageByCategories(Integer pageNum, Integer pageSize, String categories);
     List<Employment> getByEmployerIds(String employerIds);
     Page<Employment> pageByEmployerIds(Integer pageNum, Integer pageSize, String employerIds);
+
 }

@@ -11,6 +11,7 @@ import com.example.pm.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,11 +41,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
     @Override
     public void deleteByIds(String ids) {
-        List<String> listIds = new ArrayList<>();
         String[] aryIds = ids.split(",");
-        for(String id: aryIds){
-            listIds.add(id);
-        }
+        //将数组转化为List
+        List<String> listIds = new ArrayList<>(Arrays.asList(aryIds));
         this.removeByIds(listIds);
     }
 
