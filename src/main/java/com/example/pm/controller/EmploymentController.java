@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author YKH
- * @since 2023-05-14
+ * @since 2023-05-16
  */
 @RestController
 @RequestMapping("//employment")
@@ -67,8 +67,8 @@ public class EmploymentController {
         @ApiImplicitParam(name = "flag",value = "需要更改成为的状态",required = true,paramType = "query")
     })
     @ApiOperation(value = "更新任务状态接口：根据ID更改停状态")
-    @RequestMapping(method = RequestMethod.POST,value = "/updateUsefulByIds")
-    public Result updateUsefulByIds(String id,String flag) {
+    @RequestMapping(method = RequestMethod.POST,value = "/updateState")
+    public Result updateUsefulByIds(String id,Integer flag) {
         Result result = new Result();
         employmentService.updateUsefulByIds(id,flag);
         result.success("更新成功");
@@ -76,28 +76,76 @@ public class EmploymentController {
     }
 
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "name",value = "需要查找书籍的名字",required = true,paramType = "query"),
+        @ApiImplicitParam(name = "title",value = "需要查找任务的名字",required = true,paramType = "query"),
     })
-    @ApiOperation(value = "查找任务接口：根据姓名模糊查找书籍")
-    @RequestMapping(method = RequestMethod.POST,value = "/list")
-    public Result list(String name){
+    @ApiOperation(value = "查找任务接口：根据姓名模糊查找任务")
+    @RequestMapping(method = RequestMethod.POST,value = "/getByTitle")
+    public Result list(String title){
         Result result = new Result();
         result.success("获取list成功");
-        result.setData(employmentService.list(name));
+        result.setData(employmentService.list(title));
         return result;
     }
 
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "需要查找任务的id",required = true,paramType = "query"),
+    })
+    @ApiOperation(value = "查找任务接口：根据id精确查找任务")
+    @RequestMapping(method = RequestMethod.POST,value = "/getById")
+    public Result listById(String id){
+        Result result = new Result();
+        result.success("获取list成功");
+        result.setData(employmentService.getById(id));
+        return result;
+    }
+
+
+    @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNum",value = "第几页",required = true,paramType = "query"),
-        @ApiImplicitParam(name = "pageSize",value = "每页的书籍数量",required = true,paramType = "query"),
-        @ApiImplicitParam(name = "name",value = "需要查找书籍的名字",required = true,paramType = "query")
+        @ApiImplicitParam(name = "pageSize",value = "每页的任务数量",required = true,paramType = "query"),
+        @ApiImplicitParam(name = "title",value = "需要查找任务的名字",required = true,paramType = "query")
     })
     @ApiOperation(value = "分页查询任务")
     @RequestMapping(method = RequestMethod.POST,value = "/page")
-    public Result page( Integer pageNum,Integer pageSize,String name ){
+    public Result page( Integer pageNum,Integer pageSize,String title ){
         Result result = new Result();
         result.success("获取list成功");
-        result.setData(employmentService.page(pageNum,pageSize,name));
+        result.setData(employmentService.page(pageNum,pageSize,title));
         return result;
     }
+
+    @ApiOperation(value = "按用户id查询任务")
+    @RequestMapping(method = RequestMethod.GET,value = "/get_tasks_by_employer")
+    public Result get_tasks_by_categories( String employerIds ){
+        Result result = new Result();
+        if(employerIds == null || employerIds.equals("")){
+            result.fail("错误：参数为空");
+        }else {
+            result.success("获取任务成功");
+            result.setData(employmentService.getByEmployerIds(employerIds));
+        }
+        return result;
+    }
+
+
+    @ApiOperation(value = "按用户ID分页查询任务")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum",value = "第几页",required = true,paramType = "query"),
+            @ApiImplicitParam(name = "pageSize",value = "每页的任务数量",required = true,paramType = "query"),
+            @ApiImplicitParam(name = "employerIds",value = "需要查找用户的id",required = true,paramType = "query")
+    })
+    @RequestMapping(method = RequestMethod.GET,value = "/page_tasks_by_employer")
+    public Result page_tasks_by_categories( Integer pageNum,Integer pageSize, String employerIds ){
+        Result result = new Result();
+        if (employerIds == null || employerIds.equals("")){
+            result.setData(employerIds);
+            result.fail("错误：参数为空");
+        }else {
+            result.success("分页获取任务成功");
+            result.setData(employmentService.pageByEmployerIds(pageNum,pageSize,employerIds));
+        }
+        return result;
+    }
+
+
 }

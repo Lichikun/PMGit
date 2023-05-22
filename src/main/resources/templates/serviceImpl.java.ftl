@@ -78,6 +78,14 @@ public class ${table.serviceImplName} extends ServiceImpl<${table.mapperName},${
     }
 
     @Override
+    public ${entity} getById(String id){
+    QueryWrapper<${entity}> QueryWrapper = new QueryWrapper<>();
+    QueryWrapper.eq("id",id);
+
+    return this.getOne(QueryWrapper);
+    }
+
+    @Override
     public List<${entity}> list (String name){
         QueryWrapper<${entity}> queryWrapper = new QueryWrapper<>();
             queryWrapper.like("name",name);

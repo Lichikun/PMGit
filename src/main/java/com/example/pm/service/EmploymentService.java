@@ -12,7 +12,7 @@ import java.util.List;
     * </p>
 *
 * @author YKH
-* @since 2023-05-14
+* @since 2023-05-16
 */
 public interface EmploymentService extends IService<Employment> {
 
@@ -20,8 +20,10 @@ public interface EmploymentService extends IService<Employment> {
     void deleteByIds(String ids);
     Boolean update(Employment employment);
     Employment getByName(String name);
-    Employment getById(String id);
     List<Employment> list(String id);
-    Boolean updateUsefulByIds(String id, String flag);
+    Employment getById(String id);
+    Boolean updateUsefulByIds(String id, Integer flag);
     Page<Employment> page(Integer pageNum, Integer pageSize, String name);
+    List<Employment> getByEmployerIds(String employerIds);
+    Page<Employment> pageByEmployerIds(Integer pageNum, Integer pageSize, String employerIds);
 }

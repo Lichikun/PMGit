@@ -13,16 +13,16 @@ import java.util.List;
  *
 *
 * @author YKH
-* @since 2023-05-14
+* @since 2023-05-16
 */
 public interface UserService extends IService<User> {
 
     Boolean add(User user);
     void deleteByIds(String ids);
     Boolean update(User user);
-    User getByName(String name);
     User getById(String id);
+    User getByName(String name);
     List<User> list(String id);
-    Boolean updateUsefulByIds(String id, Boolean flag);
+    Boolean updateUsefulByIds(String id, Integer flag);
     Page<User> page(Integer pageNum, Integer pageSize, String name);
 }

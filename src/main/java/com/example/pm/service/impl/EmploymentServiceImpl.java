@@ -19,7 +19,7 @@ import java.util.List;
     * </p>
 *
 * @author YKH
-* @since 2023-05-14
+* @since 2023-05-16
 */
 @Service
 public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper,Employment> implements EmploymentService {
@@ -27,8 +27,9 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper,Employme
 
     @Override
     public Boolean add(Employment employment) {
+        employment.setCreatetime(DateTool.getCurrTime());
+        employment.setState(1);
         this.save(employment);
-        employment.setTime(DateTool.getCurrTime());
         return true;
     }
 
@@ -49,7 +50,7 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper,Employme
     }
 
     @Override
-    public Boolean updateUsefulByIds(String ids, String flag) {
+    public Boolean updateUsefulByIds(String ids, Integer flag) {
         //ids  若干个id 用逗号隔开
         String[] aryIds = ids.split(",");
         for(String id: aryIds){
@@ -61,6 +62,7 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper,Employme
             //修改数据
             Employment employment = this.getOne(UpdateWrapper);
             employment.setState(flag);
+
             //执行
             this.update(employment);
         }
@@ -68,9 +70,9 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper,Employme
     }
 
     @Override
-    public Employment getByName(String name){
+    public Employment getByName(String title){
     QueryWrapper<Employment> QueryWrapper = new QueryWrapper<>();
-        QueryWrapper.eq("ename",name);
+        QueryWrapper.eq("title",title);
 
         return this.getOne(QueryWrapper);
     }
@@ -84,19 +86,43 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper,Employme
     }
 
     @Override
-    public List<Employment> list (String name){
+    public List<Employment> list (String title){
         QueryWrapper<Employment> queryWrapper = new QueryWrapper<>();
-            queryWrapper.like("ename",name);
+            queryWrapper.like("title",title);
 
             return this.list(queryWrapper);
     }
 
     @Override
-    public Page<Employment> page(Integer pageNum,Integer pageSize,String name) {
+    public Page<Employment> page(Integer pageNum,Integer pageSize,String title) {
         Page<Employment> page = new Page<>(pageNum,pageSize);
         QueryWrapper<Employment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("ename",name);
+        queryWrapper.like("title",title);
 
+        return this.page(page,queryWrapper);
+    }
+
+    @Override
+    public List<Employment> getByEmployerIds(String employerIds) {
+        String[] aryEmployers = employerIds.split(",");
+        List<Employment> employmentList= new ArrayList<>();
+        for(String employerId : aryEmployers){
+            QueryWrapper<Employment> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("employerID", employerId);
+            employmentList.addAll(this.list(queryWrapper));
+        }
+
+        return employmentList;
+    }
+
+    @Override
+    public Page<Employment> pageByEmployerIds(Integer pageNum, Integer pageSize, String employerIds) {
+        Page<Employment> page = new Page<>(pageNum,pageSize);
+        String[] aryEmployers = employerIds.split(",");
+        QueryWrapper<Employment> queryWrapper = new QueryWrapper<>();
+        for(String employerId: aryEmployers){
+            queryWrapper.eq("employerID", employerId);
+        }
         return this.page(page,queryWrapper);
     }
 
