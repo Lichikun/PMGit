@@ -1,6 +1,6 @@
 package com.example.pm.mapper;
 
-import com.example.pm.entity.User;
+import com.example.pm.entity.Category;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author YKH
- * @since 2023-05-16
+ * @since 2023-05-21
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface CategoryMapper extends BaseMapper<Category> {
 
 }

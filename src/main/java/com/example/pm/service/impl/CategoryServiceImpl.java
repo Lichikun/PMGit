@@ -5,13 +5,12 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.pm.common.utils.DateTool;
-import com.example.pm.mapper.UserMapper;
-import com.example.pm.entity.User;
-import com.example.pm.service.UserService;
+import com.example.pm.mapper.CategoryMapper;
+import com.example.pm.entity.Category;
+import com.example.pm.service.CategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,81 +19,80 @@ import java.util.List;
     * </p>
 *
 * @author YKH
-* @since 2023-05-16
+* @since 2023-05-21
 */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
+public class CategoryServiceImpl extends ServiceImpl<CategoryMapper,Category> implements CategoryService {
 
 
     @Override
-    public Boolean add(User user) {
-        user.setState(1);
-        this.save(user);
+    public Boolean add(Category category) {
+
+        this.save(category);
         return true;
     }
 
     @Override
-    public Boolean update(User user) {
-        this.updateById(user);
+    public Boolean update(Category category) {
+        this.updateById(category);
         return true;
     }
 
     @Override
     public void deleteByIds(String ids) {
+        List<String> listIds = new ArrayList<>();
         String[] aryIds = ids.split(",");
-        //将数组转化为List
-        List<String> listIds = new ArrayList<>(Arrays.asList(aryIds));
+        for(String id: aryIds){
+            listIds.add(id);
+        }
         this.removeByIds(listIds);
     }
 
     @Override
-    public Boolean updateUsefulByIds(String ids, Integer flag) {
+    public Boolean updateUsefulByIds(String ids, Boolean flag) {
         //ids  若干个id 用逗号隔开
         String[] aryIds = ids.split(",");
         for(String id: aryIds){
 
             //查找符合的数据
-            UpdateWrapper<User> UpdateWrapper = new UpdateWrapper();
+            UpdateWrapper<Category> UpdateWrapper = new UpdateWrapper();
             UpdateWrapper.eq("id",id);
 
             //修改数据
-            User user = this.getOne(UpdateWrapper);
-            user.setState(flag);
+            Category category = this.getOne(UpdateWrapper);
 
             //执行
-            this.update(user);
+            this.update(category);
         }
         return true;
     }
 
     @Override
-    public User getByName(String name){
-    QueryWrapper<User> QueryWrapper = new QueryWrapper<>();
+    public Category getByName(String name){
+    QueryWrapper<Category> QueryWrapper = new QueryWrapper<>();
         QueryWrapper.eq("name",name);
 
         return this.getOne(QueryWrapper);
     }
 
     @Override
-    public User getById(String id){
-    QueryWrapper<User> QueryWrapper = new QueryWrapper<>();
+    public Category getById(String id){
+    QueryWrapper<Category> QueryWrapper = new QueryWrapper<>();
     QueryWrapper.eq("id",id);
 
     return this.getOne(QueryWrapper);
     }
 
     @Override
-    public List<User> list (String name){
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-            queryWrapper.like("name",name);
-
-            return this.list(queryWrapper);
+    public List<Category> list (){
+        QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
+        return this.list(queryWrapper);
     }
 
     @Override
-    public Page<User> page(Integer pageNum,Integer pageSize,String name) {
-        Page<User> page = new Page<>(pageNum,pageSize);
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+    public Page<Category> page(Integer pageNum,Integer pageSize,String name) {
+        Page<Category> page = new Page<>(pageNum,pageSize);
+        QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("name",name);
 
         return this.page(page,queryWrapper);

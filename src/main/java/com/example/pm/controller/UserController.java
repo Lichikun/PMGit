@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author YKH
- * @since 2023-05-14
+ * @since 2023-05-16
  */
 @RestController
 @RequestMapping("//user")
@@ -32,11 +32,11 @@ public class UserController {
             "其中id由系统自动生成，其他按输入设置")
     @RequestMapping(method = RequestMethod.POST, value = "/save")
     public Result save(@RequestBody User user) {
-        User FindUser = userService.getByName(user.getUsername());
+        User FindUser = userService.getByName(user.getName());
         Result result = new Result();
         //业务 交给业务成 service 去处理
         if(FindUser != null){
-            result.fail(user.getUsername()+"已存在");
+            result.fail(user.getName()+"已存在");
         }else{
             userService.add(user);
             result.success("添加成功");}
@@ -67,7 +67,8 @@ public class UserController {
         Result result = new Result();
         User FindUser = userService.getByName(username);
         if(FindUser == null || !FindUser.getPassword().equals(password) ){
-            result.fail("用户名不存在或密码错误");
+            result.fail("用户名不存在或密码错误"+username+password);
+            result.setData(FindUser);
         }else{
             result.success("登入成功");}
         return result;
@@ -92,14 +93,26 @@ public class UserController {
     public Result list(String name){
         Result result = new Result();
         result.success("查询成功");
-        result.setData(userService.list(name));
+        result.setData(userService.getByName(name));
+        return result;
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "需要查找用户的ID",required = true,paramType = "query"),
+    })
+    @ApiOperation(value = "用户查询接口(ID):根据ID精确查询查找用户")
+    @RequestMapping(method = RequestMethod.POST,value = "/getUserById")
+    public Result listbyid(String id){
+        Result result = new Result();
+        result.success("查询成功");
+        result.setData(userService.getById(id));
         return result;
     }
 
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pageNum",value = "第几页",required = true,paramType = "query"),
-        @ApiImplicitParam(name = "pageSize",value = "每页的书籍数量",required = true,paramType = "query"),
-        @ApiImplicitParam(name = "name",value = "需要查找书籍的名字",required = true,paramType = "query")
+        @ApiImplicitParam(name = "pageSize",value = "每页的用户数量",required = true,paramType = "query"),
+        @ApiImplicitParam(name = "name",value = "需要查找用户的名字",required = true,paramType = "query")
     })
     @ApiOperation(value = "信息分页查询接口")
     @RequestMapping(method = RequestMethod.POST,value = "/page")

@@ -19,6 +19,7 @@ public interface ${table.serviceName} extends IService<${entity}> {
     Boolean add(${entity} ${table.entityPath});
     void deleteByIds(String ids);
     Boolean update(${entity} ${table.entityPath});
+    ${entity} getById(String id);
     ${entity} getByName(String name);
     List<${entity}> list(String id);
     Boolean updateUsefulByIds(String id, Boolean flag);
